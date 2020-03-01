@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+    rpc Create(User) returns (Response) {}
+    rpc Get(User) returns (Response) {}
+    rpc GetAll(Request) returns (Response) {}
+    rpc Auth(User) returns (Token) {}
+    rpc DeleteAuth(Token) returns (Response) {}
+    rpc ValidateToken(Token) returns (Token) {}
+}
+
+message User {
+    string id = 1;
+    string pretty_id = 2;
+    string name = 3;
+    string password = 4;
+    int64 create_time = 5;
+    int64 update_time =6;
+    int64 delete_time = 7;
+}
+
+message Request {
+    int64 page_num = 1;
+    int64 page_size = 2;
+}
+
+message Response {
+    User user = 1;
+    repeated User users = 2;
+    repeated Error errors = 3;
+}
+
+message Token {
+    string token = 1;
+    bool valid = 2;
+    repeated Error errors = 3;
+}
+
+message Error {
+    int32 code = 1;
+    string message = 2;
+}
