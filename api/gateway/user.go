@@ -20,10 +20,7 @@ func createUser(userService pb.UserServiceClient) func(c *gin.Context) {
 		}{}
 		if err := c.BindJSON(&req); err != nil {
 			log.Printf("bind params failed: %v", err)
-			c.JSON(200, gin.H{
-				"code":    10002,
-				"message": "参数错误",
-			})
+			RespError(c, ErrValidateParams, nil)
 			return
 		}
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -31,13 +28,10 @@ func createUser(userService pb.UserServiceClient) func(c *gin.Context) {
 		r, err := userService.Create(ctx, &pb.User{Name: req.Username, Password: req.Password})
 		if err != nil {
 			log.Printf("call Create failed: %v", err)
-			c.JSON(500, gin.H{
-				"code":    10003,
-				"message": "服务调用失败",
-			})
+			RespError(c, ErrFailedToCallUserService, nil)
 			return
 		}
-		c.JSON(200, r)
+		RespSuccess(c, r)
 	}
 }
 
@@ -49,10 +43,7 @@ func getAllUsers(userService pb.UserServiceClient) func (c *gin.Context) {
 		}{}
 		if err := c.BindJSON(&req); err != nil {
 			log.Printf("bind params failed: %v", err)
-			c.JSON(200, gin.H{
-				"code":    10002,
-				"message": "参数错误",
-			})
+			RespError(c, ErrValidateParams, nil)
 			return
 		}
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -60,13 +51,10 @@ func getAllUsers(userService pb.UserServiceClient) func (c *gin.Context) {
 		r, err := userService.GetAll(ctx, &pb.Request{PageNum: req.PageNum, PageSize: req.PageSize})
 		if err != nil {
 			log.Printf("call GetAll failed: %v", err)
-			c.JSON(500, gin.H{
-				"code":    10003,
-				"message": "服务调用失败",
-			})
+			RespError(c, ErrFailedToCallUserService, nil)
 			return
 		}
-		c.JSON(200, r)
+		RespSuccess(c, r)
 	}
 }
 
@@ -77,10 +65,7 @@ func getUser(userService pb.UserServiceClient) func (c *gin.Context) {
 		}{}
 		if err := c.BindJSON(&req); err != nil {
 			log.Printf("bind params failed: %v", err)
-			c.JSON(200, gin.H{
-				"code":    10002,
-				"message": "参数错误",
-			})
+			RespError(c, ErrValidateParams, nil)
 			return
 		}
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -88,13 +73,10 @@ func getUser(userService pb.UserServiceClient) func (c *gin.Context) {
 		r, err := userService.Get(ctx, &pb.User{PrettyId: req.UID})
 		if err != nil {
 			log.Printf("call GetAll failed: %v", err)
-			c.JSON(500, gin.H{
-				"code":    10003,
-				"message": "服务调用失败",
-			})
+			RespError(c, ErrFailedToCallUserService, nil)
 			return
 		}
-		c.JSON(200, r)
+		RespSuccess(c, r)
 	}
 }
 
@@ -106,10 +88,7 @@ func login(userService pb.UserServiceClient) func (c *gin.Context) {
 		}{}
 		if err := c.BindJSON(&req); err != nil {
 			log.Printf("bind params failed: %v", err)
-			c.JSON(200, gin.H{
-				"code":    10002,
-				"message": "参数错误",
-			})
+			RespError(c, ErrValidateParams, nil)
 			return
 		}
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -117,12 +96,9 @@ func login(userService pb.UserServiceClient) func (c *gin.Context) {
 		r, err := userService.Auth(ctx, &pb.User{Name: req.Username, Password: req.Password})
 		if err != nil {
 			log.Printf("call Auth failed: %v", err)
-			c.JSON(500, gin.H{
-				"code":    10003,
-				"message": "服务调用失败",
-			})
+			RespError(c, ErrFailedToCallUserService, nil)
 			return
 		}
-		c.JSON(200, r)
+		RespSuccess(c, r)
 	}
 }

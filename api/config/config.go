@@ -15,6 +15,7 @@ var (
 type Config struct {
         Name       string
         Port       string
+        Version    string
         UserSeviceAddr userServiceConfig `toml:"userService"`
 }
 

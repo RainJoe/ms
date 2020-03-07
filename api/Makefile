@@ -10,9 +10,9 @@ test:
 
 .PHONY: docker
 docker:
-	docker build . -t ccr.ccs.tencentyun.com/rainjoe/api-gateway:0.1.2
+	docker build . -t ccr.ccs.tencentyun.com/rainjoe/api-gateway:0.1.4
 	docker login -u $(ccruser) -p $(ccrpassword) ccr.ccs.tencentyun.com
-	docker push ccr.ccs.tencentyun.com/rainjoe/api-gateway:0.1.2
+	docker push ccr.ccs.tencentyun.com/rainjoe/api-gateway:0.1.4
 
 .PHONY: clean
 clean:
